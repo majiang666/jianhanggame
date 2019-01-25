@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Document</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			background: #fafadd;
+		}
+		.fly,.click{
+			width:80px;
+			height:80px;
+			background: #f60;
+			border-radius: 50%;
+			position:fixed;
+			bottom:20px;
+			line-height: 80px;
+			text-align: center;
+			color:#fff;
+			font-size:20px;
+			z-index: 999;
+		}
+		.fly{
+			left:20px;
+		}
+		.click{
+			right:20px;
+		}
+		.airplane{
+			width:60px;
+			height:32px;
+			position: fixed;
+			top:50px;
+			left:10%;
+			transition: all 0.2s;
+		}
+		.airplane img{
+			width:100%;
+		}
+		.bg{
+			position: absolute;
+			left:0;
+			bottom:0;
+			height:250px;
+			width:100%;
+			background: url(bg.png) no-repeat;
+			background-position: 0 0;
+			-webkit-animation: move 30s linear infinite; 
+		}
+		@-webkit-keyframes move{
+		  from {
+		    background-position: 0 0;
+		  }
+		  to {
+		    background-position: -3000px 0;
+		  }
+		}
+		.gift{
+			width:30px;
+			height:30px;
+			position:absolute;
+			left:10%;
+			opacity: 0;
+			transition: all 1.5s;
+		}
+		.heart-sf{
+			-webkit-animation-name: heartSf;
+    		animation-name: heartSf;
+			-webkit-animation-duration: 3.5s;
+			animation-duration: 3.5s;
+			-webkit-animation-fill-mode: both;
+			animation-fill-mode: both
+		}
+		@keyframes heartSf{
+			0%{
+				opacity: 0;
+			}
+			90%{
+				top:90%;
+				opacity: 1;
+			}
+			100%{
+				top:100%;
+				opacity: 0;
+			}
+		}
+		.popup{
+			position:fixed;
+			z-index: 9999;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+			background: rgba(0,0,0,0.5);
+			display: none;
+		}
+		.popup-mean{
+			width:80%;
+			background: #fff;
+			position:absolute;
+			top:50%;
+			left:50%;
+			transform: translate(-50%,-50%);
+			border-radius: 20px;
+			text-align: center;
+		}
+		.popup-mean h1{
+			font-size:18px;
+			font-weight: normal;
+			text-align: center;
+			color:#666;
+			padding:15px 0;
+		}
+		.popup-mean p{
+			font-size:18px;
+			color:#f60;
+		}
+		.popup-mean p img{
+			width:44px;
+		}
+		.popup-mean a{
+			color:#333;
+			width:50%;
+			font-size:15px;
+			text-decoration: none;
+			display: inline-block;
+			padding:15px 0;
+			float:left;
+		}
+	</style>
+</head>
+<body>
+	<div class="popup">
+		<div class="popup-mean">
+			<h1>GAME OVER</h1>
+			<p><img src="sad.png"><br />游戏结束</p>
+			<a href="javascript:;" id="gameOver">结束游戏</a>
+			<a href="javascript:;" id="resetGame">重新开始</a>
+		</div>
+	</div>
+
+	<div class="bg"></div>
+	<div class="airplane">
+		<img src="fly.png">
+	</div>
+	<div class="fly">飞行</div>
+	<div class="click">猛戳</div>
+	<script src="https://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
+	<script>
+		$(function(){
+			var heights = 50;
+			var tops;
+			var times = setInterval(start, 50);
+			function start(){
+				if($(".airplane").offset().top >= $(window).height() - $(".bg").height() + 50){
+					clearInterval(times);
+					$(".popup").show();
+					$(".airplane").hide();
+				}
+				tops = heights+=2;
+				$(".airplane,.gift").css({"top":tops});
+				$(".gift").css({"top":$(".airplane").offset().top - 50});
+			}
+			$(".fly").click(function(){
+				tops = heights-=20;
+				$(".airplane,.gift").css({"top":tops});
+				clearInterval(times);
+			});
+			times = setInterval(start, 50);
+
+			$(".click").click(function(){
+				setTimeout(() => {
+					$("body").append('<img src="gift.png" class="gift heart-sf" />');
+				}, 500);
+				
+				setTimeout(() => {
+					$(".gift").remove();
+				}, 3500);
+			});
+			$("#resetGame").click(function(){
+				window.location.reload();
+			});
+			$("#gameOver").click(function(){
+				window.location.href="https://www.love85g.com";
+			});
+		});
+	</script>
+</body>
+</html>
